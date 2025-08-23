@@ -10,8 +10,79 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header><h1>Daily Checklist</h1></header>
-  <main><p>Мини апликация за дневен чеклист. Работи офлайн.</p></main>
+  <header>
+    <h1>Daily Checklist</h1>
+    <button id="installBtn" class="ghost" hidden>Инсталирай</button>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="today">Днес</button>
+    <button class="tab" data-tab="stats">Статистика</button>
+    <button class="tab" data-tab="settings">Настройки</button>
+  </nav>
+
+  <main>
+    <section id="today" class="tab-panel active">
+      <div class="date-row">
+        <label for="date">Дата</label>
+        <input type="date" id="date" />
+        <button id="clearDay" class="ghost">Изчисти</button>
+      </div>
+
+      <h2>Позитивни</h2>
+      <ul id="positiveList" class="list"></ul>
+
+      <h2>Негативни</h2>
+      <ul id="negativeList" class="list negative"></ul>
+
+      <div class="summary">
+        <span id="posSummary">0/0</span>
+        <span id="negSummary">0 нежелани</span>
+      </div>
+    </section>
+
+    <section id="stats" class="tab-panel">
+      <div class="stats-grid">
+        <div class="card">
+          <h3>Тази седмица</h3>
+          <div id="weekStats"></div>
+        </div>
+        <div class="card">
+          <h3>Този месец</h3>
+          <div id="monthStats"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Детайл по навик</h3>
+        <select id="habitSelect"></select>
+        <div id="habitTrend"></div>
+      </div>
+    </section>
+
+    <section id="settings" class="tab-panel">
+      <h2>Навици</h2>
+      <p>Редактирай списъците (по един навик на ред). Натисни „Запази“.</p>
+      <div class="settings-grid">
+        <div>
+          <h3>Позитивни</h3>
+          <textarea id="settingsPositive" rows="12"></textarea>
+        </div>
+        <div>
+          <h3>Негативни</h3>
+          <textarea id="settingsNegative" rows="12"></textarea>
+        </div>
+      </div>
+      <button id="saveSettings">Запази</button>
+      <button id="exportData" class="ghost">Експорт</button>
+      <input type="file" id="importFile" accept=".json" hidden />
+      <button id="importData" class="ghost">Импорт</button>
+    </section>
+  </main>
+
+  <footer>
+    <small>Работи офлайн. Данните се пазят локално на устройството.</small>
+  </footer>
+
   <script src="app.js"></script>
 </body>
 </html>
