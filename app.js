@@ -50,8 +50,32 @@ const defaultNegative = [
 // ====== Утилити ======
 const $ = (sel)=>document.querySelector(sel);
 const $$ = (sel)=>Array.from(document.querySelectorAll(sel));
-const todayStr = ()=> new Date().toISOString().slice(0,10);
+
+// Локален ключ за дата: YYYY-MM-DD (без UTC изместване)
+function dateKey(d){
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+
+// Днешна дата (локално)
+const todayStr = () => dateKey(new Date());
+
+// Формат за показване DD.MM.YYYY (работи с YYYY-MM-DD ключ)
 const fmtBG = (d)=>{ const [y,m,day]=d.split("-"); return `${day}.${m}.${y}`; };
+
+// Обхват от дати (локално, без UTC)
+function getDatesInRange(start, end){
+  const out = [];
+  const cur = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+  const e   = new Date(end.getFullYear(),   end.getMonth(),   end.getDate());
+  while(cur <= e){
+    out.push(dateKey(cur));
+    cur.setDate(cur.getDate()+1);
+  }
+  return out;
+}
 
 function getSettings(){
   const st = JSON.parse(localStorage.getItem("settings") || "{}");
@@ -60,11 +84,18 @@ function getSettings(){
     negative: st.negative || defaultNegative
   };
 }
+
 function saveSettings(positive, negative){
   localStorage.setItem("settings", JSON.stringify({positive, negative}));
 }
-function getData(){ return JSON.parse(localStorage.getItem("data") || "{}"); }
-function saveData(data){ localStorage.setItem("data", JSON.stringify(data)); }
+
+function getData(){ 
+  return JSON.parse(localStorage.getItem("data") || "{}"); 
+}
+
+function saveData(data){ 
+  localStorage.setItem("data", JSON.stringify(data)); 
+}
 
 // structure: data[date] = { pos: {habit:true/false}, neg: {habit:true/false} }
 function ensureDay(date){
