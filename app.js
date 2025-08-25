@@ -147,12 +147,11 @@ function getDatesInRange(start, end){
 
 function calcStats(rangeDates){
   const {positive, negative} = getSettings();
-  const data = getData();
   let posDone=0, posTotal=0, negCount=0;
 
   rangeDates.forEach(d=>{
     ensureDay(d);
-    const day = data[d];
+    const day = getData()[d]; // <-- взимаме актуалните данни след ensureDay
     positive.forEach(h=>{ posTotal+=1; if(day.pos[h]) posDone+=1; });
     negative.forEach(h=>{ if(day.neg[h]) negCount+=1; });
   });
