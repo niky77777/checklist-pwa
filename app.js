@@ -146,18 +146,23 @@ function getDatesInRange(start, end){
 }
 
 function calcStats(rangeDates){
-  const {positive, negative} = getSettings();
-  let posDone=0, posTotal=0, negCount=0;
+  const data = getData();
+  let posDone = 0, posTotal = 0, negCount = 0, daysWithData = 0;
 
-  rangeDates.forEach(d=>{
-    ensureDay(d);
-    const day = getData()[d]; // <-- взимаме актуалните данни след ensureDay
-    positive.forEach(h=>{ posTotal+=1; if(day.pos[h]) posDone+=1; });
-    negative.forEach(h=>{ if(day.neg[h]) negCount+=1; });
+  rangeDates.forEach(d => {
+    const day = data[d];
+    if (!day) return; // няма запис за този ден => не го броим
+
+    const posKeys = Object.keys(day.pos || {});
+    const negKeys = Object.keys(day.neg || {});
+    if (posKeys.length || negKeys.length) daysWithData += 1;
+
+    posKeys.forEach(h => { posTotal += 1; if (day.pos[h]) posDone += 1; });
+    negKeys.forEach(h => { if (day.neg[h]) negCount += 1; });
   });
 
-  const posPct = posTotal ? Math.round(posDone/posTotal*100) : 0;
-  return {posPct, negCount, days:rangeDates.length};
+  const posPct = posTotal ? Math.round((posDone / posTotal) * 100) : 0;
+  return { posPct, negCount, days: daysWithData };
 }
 
 function renderPanelStats(){
