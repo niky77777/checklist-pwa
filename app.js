@@ -209,8 +209,7 @@ function renderHabitTrend(habit){
   let rows = "<table class='trend'><tr><th>Дата</th><th>✔</th></tr>";
   const data = getData();
   dates.forEach(d=>{
-    ensureDay(d);
-    const v = data[d]?.pos?.[habit] ? "✔" : "—";
+    const v = data[d]?.pos?.[habit] ? "✔" : "—"; // не създаваме нови записи
     rows += `<tr><td>${fmtBG(d)}</td><td>${v}</td></tr>`;
   });
   rows += "</table>";
