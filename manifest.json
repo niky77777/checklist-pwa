@@ -1,6 +1,6 @@
 {
-  "name": "Daily Checklist",
-  "short_name": "Checklist",
+  "name": "Act",
+  "short_name": "Act",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#0b0c0f",
